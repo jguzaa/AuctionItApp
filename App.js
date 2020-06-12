@@ -7,9 +7,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import { Login } from './Login';
 import { Register } from './Register';
-//import { Auction } from './Auction';
-//import { CreateAuction } from './CreateAuction';
-//import { ManageAuction } from './ManageAuction';
+import { Main } from './Main';
+
 
 
 const Stack = createStackNavigator();
@@ -25,6 +24,10 @@ const App = () => (
       <Stack.Screen
         name="Register"
         component={Register}
+      />
+      <Stack.Screen
+        name="Main"
+        component={Main}
       />
       
     </Stack.Navigator>

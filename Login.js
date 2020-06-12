@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { Text, View, Image, StyleSheet, TextInput } from 'react-native';
+import {useState} from 'react';
+import axios from 'axios';
 
 import { Button } from 'react-native-paper';
 
@@ -20,6 +22,10 @@ const styles = StyleSheet.create({
 });
 
 export function Login({ navigation, route }) {
+
+    const [user, setUser] = useState('');
+    const [pass, setPass] = useState('');
+
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Image
@@ -31,22 +37,37 @@ export function Login({ navigation, route }) {
             <Text style={{ paddingTop: 20 }}>Usename</Text>
             <TextInput
                 style={{ height: 40, width: 100, borderColor: 'gray', borderWidth: 1 }}
-            //onChangeText={text => onChangeText(text)}
-            //value={value}
+                onChangeText={user => setUser(user)}
+                defaultValue={user}
             />
 
             <Text>Password</Text>
             <TextInput
                 style={{ height: 40, width: 100, borderColor: 'gray', borderWidth: 1 }}
-            //onChangeText={text => onChangeText(text)}
-            //value={value}
+                onChangeText={pass => setPass(pass)}
+                defaultValue={pass}
             />
 
             <Button 
                 icon="login" 
                 style={{ marginTop: 10 }} 
                 mode="contained" 
-                onPress={() => console.log('Pressed')}>
+                onPress={() => {
+                    axios
+                    .post('http://192.168.1.126:3000/login/',{
+                        username: user,
+                        password: pass
+                    })
+                    .then(function(response){
+                        console.log(response.data);
+                        alert('Login successful');
+                        navigation.navigate("Main", response.data)
+                    })
+                    .catch(function(error){
+                        console.log(error);
+                        alert('ERROR Try again later');
+                    })
+                }}>
                 Log in
             </Button>
 

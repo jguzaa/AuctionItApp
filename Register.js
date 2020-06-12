@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {useState} from 'react';
-import { Text, View, Image, StyleSheet, TextInput } from 'react-native';
+import { Text, View, Image, StyleSheet, TextInput, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import axios from 'axios';
 
@@ -41,15 +41,19 @@ export function Register({ navigation, route }) {
                 onPress={() => {
                     
                     axios
-                    .post('http://192.168.1.126:3000/user/',{
+                    .post('http://192.168.1.126:3000/user_regis/',{
                         username: user,
-                        password: pass
+                        password: pass,
+                        phoneNo: pNo
                     })
                     .then(function(response){
                         console.log(response.data);
+                        alert('Register successful');
+                        navigation.navigate("Login")
                     })
                     .catch(function(error){
                         console.log(error);
+                        alert('ERROR Try again later');
                     })
                 }}>
                 Register
