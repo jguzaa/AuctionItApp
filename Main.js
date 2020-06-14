@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Text, View, Image, StyleSheet, TextInput } from 'react-native';
+import { Text, View, Image, StyleSheet, TextInput, Button, Dimensions, TouchableOpacity } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useState } from 'react';
-
-import { Button } from 'react-native-paper';
+import ImagePicker from 'react-native-image-picker'
+import axiosClient from 'axios'
 
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -22,6 +22,47 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 30,
     },
+    imageContainer: {
+        backgroundColor: '#fe5b29',
+        height: 200,
+    },
+    backgroundImage: {
+        flex: 1,
+        resizeMode: 'cover',
+    },
+    uploadContainer: {
+        backgroundColor: '#f6f5f8',
+        width: Dimensions.get('window').width,
+        height: 200,
+    },
+    uploadContainerTitle: {
+        alignSelf: 'center',
+        fontSize: 25,
+        margin: 20,
+        fontFamily: 'Roboto'
+    },
+    uploadButton: {
+        borderRadius: 16,
+        alignSelf: 'center',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 7,
+            height: 5,
+        },
+        shadowOpacity: 1.58,
+        shadowRadius: 9,
+        elevation: 4,
+        margin: 10,
+        padding: 10,
+        backgroundColor: '#fe5b29',
+        width: Dimensions.get('window').width - 60,
+        alignItems: 'center'
+    },
+    uploadButtonText: {
+        color: '#f6f5f8',
+        fontSize: 20,
+        fontFamily: 'Roboto'
+    }
 });
 
 const Tab = createBottomTabNavigator();
@@ -76,10 +117,96 @@ function HomeScreen() {
 }
 
 function CreateScreen() {
+
+    const [photoUri, setPhotoUri] = useState('https://res.cloudinary.com/ogcodes/image/upload/v1581387688/m0e7y6s5zkktpceh2moq.jpg');
+
+    const selectPhotoTapped = () => {
+        const options = {
+            title: 'Select Photo',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        };
+        ImagePicker.showImagePicker(options, (response) => {
+
+            // console.log('Response = ', response);
+            if (response.didCancel) {
+                console.log('User cancelled image picker');
+            } else if (response.error) {
+                console.log('ImagePicker Error: ', response.error);
+            } else {
+                const uri = response.uri;
+                const type = response.type;
+                const name = response.fileName;
+                const path = response.path;
+                const source = {
+                    uri,
+                    type,
+                    name,
+                }
+                console.log(source)
+                //setPhotoUri(source.uri)
+                cloudinaryUpload(response)
+
+            }
+        });
+
+        const cloudinaryUpload = (photo) => {
+
+            const cloudName = 'dkthn2rrz';
+            const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+
+            const formData = new FormData()
+            formData.append("api_key", '927137781937745');
+            formData.append("file", 'data:image/jpg;base64,' + photo.data);
+            //formData.append("public_id", "sample_image");
+            formData.append("timestamp", Date.now() / 1000);
+            formData.append("upload_preset", 'dkthn2rrzup');
+
+
+
+            axiosClient
+                .post(url, formData)
+                .then((result) => {
+                    console.log(result.data.secure_url)
+
+                    setPhotoUri(result.data.secure_url)
+
+                    alert("Upload completed")
+                })
+                .catch((err) => {
+                    console.log(err);
+                    alert("An Error Occured While Uploading")
+                })
+
+            /*fetch(url, {
+                method: "post",
+                body: formData
+            }).then(res => res.json()).
+                then(data => {
+                    setPhoto(data.secure_url)
+
+                }).catch(err => {
+                    alert("An Error Occured While Uploading")
+                })*/
+        }
+
+    }
+
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Create!</Text>
-        </View>
+        <View>
+            <View style={styles.imageContainer}>
+                <Image style={styles.backgroundImage} source={{ uri: photoUri }}></Image>
+            </View>
+            <View style={styles.uploadContainer}>
+                <Text style={styles.uploadContainerTitle}>Create Auction</Text>
+                <TouchableOpacity onPress={selectPhotoTapped} style={styles.uploadButton}>
+                    <Text style={styles.uploadButtonText}>Upload</Text>
+                </TouchableOpacity>
+            </View>
+
+        </View >
     );
 }
 
