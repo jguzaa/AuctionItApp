@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { Text, View, Image, StyleSheet, TextInput, Button, Dimensions, TouchableOpacity } from 'react-native';
+import { Text, View, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useState } from 'react';
 import ImagePicker from 'react-native-image-picker'
 import axiosClient from 'axios'
+import { Button } from 'react-native-paper';
 
-import { NavigationContainer } from '@react-navigation/native';
 
 var userId = null;
 
@@ -62,17 +62,29 @@ const styles = StyleSheet.create({
         color: '#f6f5f8',
         fontSize: 20,
         fontFamily: 'Roboto'
-    }
+    },
+    item: {
+        backgroundColor: '#FFDFA3',
+        padding: 10,
+        marginVertical: 8,
+        marginHorizontal: 16,
+        width: Dimensions.get('window').width - 60,
+        borderRadius: 16,
+    },
+    title: {
+        fontSize: 32,
+    },
 });
 
 const Tab = createBottomTabNavigator();
 
 export function Main({ navigation, route }) {
 
-    console.log(route.params);
+    //console.log(route.params);
 
     const { data } = route.params;
     userId = JSON.stringify(data);
+    userId = userId.replace(/"/g, '');
 
     return (
 
@@ -108,10 +120,99 @@ export function Main({ navigation, route }) {
 
 //=======================Screen===============================
 
-function HomeScreen() {
+function HomeScreen({ navigation, route }) {
+
+    const [auctionList, setAcList] = useState([]);
+    const [selected, setSelected] = useState(new Map());
+
+    const onSelect = React.useCallback(
+        id => {
+            const newSelected = new Map(selected);
+            newSelected.set(id, !selected.get(id));
+
+            setSelected(newSelected);
+
+            axiosClient
+                .post('http://192.168.1.126:3000/auction_select/', {
+                    item_id: id
+                })
+                .then(function (response) {
+
+                    console.log(response.data.data)
+
+                    navigation.navigate("Auction", {
+                        item: response.data.data,
+                        uid: userId,
+                    });
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    alert('ERROR Try again later');
+                })
+
+            
+        },
+        [selected],
+    );
+
+    function Item({ id, title, imguri, selected, onSelect }) {
+        return (
+            <TouchableOpacity
+                onPress={() => onSelect(id)}
+                style={[
+                    styles.item,
+                ]}
+            >
+                <Text style={styles.title}>{title}</Text>
+                <Image style={{ height: 100 }} source={{ uri: imguri }}></Image>
+            </TouchableOpacity>
+        );
+    }
+
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>{userId}</Text>
+
+            <FlatList
+                data={auctionList}
+                renderItem={({ item }) =>
+                    <Item
+                        id={item._id}
+                        title={item.name}
+                        imguri={item.photouri}
+                        selected={!!selected.get(item._id)}
+                        onSelect={onSelect}
+
+                    />}
+                keyExtractor={item => item._id}
+                extraData={selected}
+            />
+
+
+            <Button
+                icon="refresh"
+                style={{
+                    marginTop: 10,
+                    marginBottom: 20
+                }}
+                mode="contained"
+                onPress={() => {
+                    axiosClient
+                        .get('http://192.168.1.126:3000/auction/')
+                        .then(function (response) {
+
+                            console.log(response.data.data)
+                            setAcList(response.data.data)
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            alert('ERROR Try again later');
+                        })
+                }}>
+                refresh
+            </Button>
+
         </View>
     );
 }
@@ -119,6 +220,34 @@ function HomeScreen() {
 function CreateScreen() {
 
     const [photoUri, setPhotoUri] = useState('https://res.cloudinary.com/ogcodes/image/upload/v1581387688/m0e7y6s5zkktpceh2moq.jpg');
+
+    const [name, setName] = useState('');
+    const [des, setDes] = useState('');
+    const [price, setPrice] = useState('');
+    const [date, setDate] = useState('');
+
+
+    const create = () => {
+        axiosClient
+            .post('http://192.168.1.126:3000/create_auction/', {
+                pname: name,
+                pdes: des,
+                pprice: price,
+                pdate: date,
+                pphotouri: photoUri,
+                puid: userId
+            })
+            .then(function (response) {
+
+                console.log(response)
+                alert('Created auction');
+
+            })
+            .catch(function (error) {
+                console.log(error);
+                alert('ERROR Try again later');
+            })
+    }
 
     const selectPhotoTapped = () => {
         const options = {
@@ -180,22 +309,13 @@ function CreateScreen() {
                     alert("An Error Occured While Uploading")
                 })
 
-            /*fetch(url, {
-                method: "post",
-                body: formData
-            }).then(res => res.json()).
-                then(data => {
-                    setPhoto(data.secure_url)
 
-                }).catch(err => {
-                    alert("An Error Occured While Uploading")
-                })*/
         }
 
     }
 
     return (
-        <View>
+        <ScrollView>
             <View style={styles.imageContainer}>
                 <Image style={styles.backgroundImage} source={{ uri: photoUri }}></Image>
             </View>
@@ -205,8 +325,52 @@ function CreateScreen() {
                     <Text style={styles.uploadButtonText}>Upload</Text>
                 </TouchableOpacity>
             </View>
+            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
 
-        </View >
+                <Text>Product name</Text>
+                <TextInput
+                    style={{ height: 40, width: 150, borderColor: 'gray', borderWidth: 1 }}
+                    onChangeText={name => setName(name)}
+                    defaultValue={name}
+                />
+
+                <Text style={{ paddingTop: 10 }}>Description</Text>
+                <TextInput
+                    style={{
+                        height: 80,
+                        width: 300,
+                        borderColor: 'gray',
+                        borderWidth: 1,
+                    }}
+                    multiline={true}
+                    numberOfLines={4}
+                    onChangeText={des => setDes(des)}
+                    defaultValue={des}
+                />
+
+                <Text>Start price</Text>
+                <TextInput
+                    style={{ height: 40, width: 150, borderColor: 'gray', borderWidth: 1 }}
+                    onChangeText={price => setPrice(price)}
+                    defaultValue={price}
+                />
+
+                <Text>End date (DD/MM/YYYY)</Text>
+                <TextInput
+                    style={{ height: 40, width: 150, borderColor: 'gray', borderWidth: 1 }}
+                    onChangeText={date => setDate(date)}
+                    defaultValue={date}
+                />
+
+
+                <TouchableOpacity onPress={create} style={styles.uploadButton}>
+                    <Text style={styles.uploadButtonText}>Create</Text>
+                </TouchableOpacity>
+
+
+            </View>
+
+        </ScrollView >
     );
 }
 

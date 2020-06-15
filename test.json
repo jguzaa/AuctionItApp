@@ -2,15 +2,12 @@
     "config": {
         "adapter": [Function xhrAdapter
         ],
-        "data": {
-            "_parts": [Array
-            ]
-        },
+        "data": undefined,
         "headers": {
             "Accept": "application/json, text/plain, */*"
         },
         "maxContentLength": -1,
-        "method": "post",
+        "method": "get",
         "timeout": 0,
         "transformRequest": [
             [Function transformRequest
@@ -20,44 +17,29 @@
             [Function transformResponse
             ]
         ],
-        "url": "https://api.cloudinary.com/v1_1/dkthn2rrz/image/upload",
+        "url": "http://192.168.1.126:3000/auction/",
         "validateStatus": [Function validateStatus
         ],
         "xsrfCookieName": "XSRF-TOKEN",
         "xsrfHeaderName": "X-XSRF-TOKEN"
     },
     "data": {
-        "access_mode": "public",
-        "asset_id": "1ac740e85e0babaa781a08a249e9471d",
-        "bytes": 200439,
-        "created_at": "2020-06-13T18:01:50Z",
-        "etag": "bfb94571fb40b682fedb2d7afd41cdb9",
-        "format": "jpg",
-        "height": 1280,
-        "placeholder": false,
-        "public_id": "auctionit/bpsaia7rk3mkmbbl3tvx",
-        "resource_type": "image",
-        "secure_url": "https://res.cloudinary.com/dkthn2rrz/image/upload/v1592071310/auctionit/bpsaia7rk3mkmbbl3tvx.jpg",
-        "signature": "25f669631f71a27205580198ce8f04a80ba45c87",
-        "tags": [],
-        "type": "upload",
-        "url": "http://res.cloudinary.com/dkthn2rrz/image/upload/v1592071310/auctionit/bpsaia7rk3mkmbbl3tvx.jpg",
-        "version": 1592071310,
-        "version_id": "01e590744c328c16f4df2c74a01f6c59",
-        "width": 960
+        "data": [
+            [Object
+            ],
+            [Object
+            ]
+        ],
+        "service": "auctionList"
     },
     "headers": {
-        "cache-control": "max-age=0, private, must-revalidate",
+        "access-control-allow-origin": "*",
         "connection": "keep-alive",
+        "content-length": "588",
         "content-type": "application/json; charset=utf-8",
-        "date": "Sat, 13 Jun 2020 18:01:50 GMT",
-        "etag": "W/\"a611529068beb4b4368690e36aafae06\"",
-        "server": "cloudinary",
-        "status": "200 OK",
-        "vary": "Accept-Encoding",
-        "x-request-id": "6b373feab4ccf170690e26a191485172",
-        "x-ua-compatible": "IE=Edge,chrome=1",
-        "x-xss-protection": "1; mode=block"
+        "date": "Sun, 14 Jun 2020 16:33:04 GMT",
+        "etag": "W/\"24c-2+N6As7RUkD0iPjotaXLpaRP0N8\"",
+        "x-powered-by": "Express"
     },
     "request": {
         "DONE": 4,
@@ -73,42 +55,34 @@
         },
         "_incrementalEvents": false,
         "_lowerCaseResponseHeaders": {
-            "cache-control": "max-age=0, private, must-revalidate",
+            "access-control-allow-origin": "*",
             "connection": "keep-alive",
+            "content-length": "588",
             "content-type": "application/json; charset=utf-8",
-            "date": "Sat, 13 Jun 2020 18:01:50 GMT",
-            "etag": "W/\"a611529068beb4b4368690e36aafae06\"",
-            "server": "cloudinary",
-            "status": "200 OK",
-            "vary": "Accept-Encoding",
-            "x-request-id": "6b373feab4ccf170690e26a191485172",
-            "x-ua-compatible": "IE=Edge,chrome=1",
-            "x-xss-protection": "1; mode=block"
+            "date": "Sun, 14 Jun 2020 16:33:04 GMT",
+            "etag": "W/\"24c-2+N6As7RUkD0iPjotaXLpaRP0N8\"",
+            "x-powered-by": "Express"
         },
-        "_method": "POST",
+        "_method": "GET",
         "_requestId": null,
-        "_response": "{\"asset_id\":\"1ac740e85e0babaa781a08a249e9471d\",\"public_id\":\"auctionit/bpsaia7rk3mkmbbl3tvx\",\"version\":1592071310,\"version_id\":\"01e590744c328c16f4df2c74a01f6c59\",\"signature\":\"25f669631f71a27205580198ce8f04a80ba45c87\",\"width\":960,\"height\":1280,\"format\":\"jpg\",\"resource_type\":\"image\",\"created_at\":\"2020-06-13T18:01:50Z\",\"tags\":[],\"bytes\":200439,\"type\":\"upload\",\"etag\":\"bfb94571fb40b682fedb2d7afd41cdb9\",\"placeholder\":false,\"url\":\"http://res.cloudinary.com/dkthn2rrz/image/upload/v1592071310/auctionit/bpsaia7rk3mkmbbl3tvx.jpg\",\"secure_url\":\"https://res.cloudinary.com/dkthn2rrz/image/upload/v1592071310/auctionit/bpsaia7rk3mkmbbl3tvx.jpg\",\"access_mode\":\"public\"}",
+        "_response": "{\"service\":\"auctionList\",\"data\":[{\"_id\":\"5ee64eccb907937bd0087439\",\"name\":\"tv\",\"description\":\"line 1\\nline 2\\nline 3\",\"price\":\"30\",\"date\":\"08/09/2020\",\"photouri\":\"https://res.cloudinary.com/dkthn2rrz/image/upload/v1592151339/auctionit/i64gemudzp03ky0hywdu.jpg\",\"uid\":\"5ee3b228b725143cba7f425d\",\"status\":true},{\"_id\":\"5ee64f9bb907937bd008743a\",\"name\":\"sofa\",\"description\":\"line 1\\nline 2\\nline 3\",\"price\":\"40\",\"date\":\"08/09/2020\",\"photouri\":\"https://res.cloudinary.com/dkthn2rrz/image/upload/v1592151954/auctionit/oiyj3dqjolhhupl2nuuk.jpg\",\"uid\":\"5ee3b228b725143cba7f425d\",\"status\":true}]}",
         "_responseType": "",
         "_sent": true,
         "_subscriptions": [],
         "_timedOut": false,
         "_trackingName": "unknown",
-        "_url": "https://api.cloudinary.com/v1_1/dkthn2rrz/image/upload",
+        "_url": "http://192.168.1.126:3000/auction/",
         "readyState": 4,
         "responseHeaders": {
-            "Cache-Control": "max-age=0, private, must-revalidate",
+            "Access-Control-Allow-Origin": "*",
             "Connection": "keep-alive",
+            "Content-Length": "588",
             "Content-Type": "application/json; charset=utf-8",
-            "Date": "Sat, 13 Jun 2020 18:01:50 GMT",
-            "ETag": "W/\"a611529068beb4b4368690e36aafae06\"",
-            "Server": "cloudinary",
-            "Status": "200 OK",
-            "Vary": "Accept-Encoding",
-            "X-Request-Id": "6b373feab4ccf170690e26a191485172",
-            "X-UA-Compatible": "IE=Edge,chrome=1",
-            "X-XSS-Protection": "1; mode=block"
+            "Date": "Sun, 14 Jun 2020 16:33:04 GMT",
+            "ETag": "W/\"24c-2+N6As7RUkD0iPjotaXLpaRP0N8\"",
+            "X-Powered-By": "Express"
         },
-        "responseURL": "https://api.cloudinary.com/v1_1/dkthn2rrz/image/upload",
+        "responseURL": "http://192.168.1.126:3000/auction/",
         "status": 200,
         "timeout": 0,
         "upload": {},

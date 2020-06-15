@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { Text, View, Image, StyleSheet, TextInput } from 'react-native';
-import {useState} from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 
 import { Button } from 'react-native-paper';
 
-import { NavigationContainer } from '@react-navigation/native';
 
 const styles = StyleSheet.create({
     container: {
@@ -48,33 +47,40 @@ export function Login({ navigation, route }) {
                 defaultValue={pass}
             />
 
-            <Button 
-                icon="login" 
-                style={{ marginTop: 10 }} 
-                mode="contained" 
+            <Button
+                icon="login"
+                style={{ marginTop: 10 }}
+                mode="contained"
                 onPress={() => {
                     axios
-                    .post('http://192.168.1.126:3000/login/',{
-                        username: user,
-                        password: pass
-                    })
-                    .then(function(response){
-                        console.log(response.data);
-                        alert('Login successful');
-                        navigation.navigate("Main", response.data)
-                    })
-                    .catch(function(error){
-                        console.log(error);
-                        alert('ERROR Try again later');
-                    })
+                        .post('http://192.168.1.126:3000/login/', {
+                            username: user,
+                            password: pass
+                        })
+                        .then(function (response) {
+
+                            console.log(response)
+                            if (response.data.data === "notFound") {
+                                alert('Incorrect username or password')
+                                
+                            } else {
+                                alert('Login successful');
+                                navigation.navigate("Main", response.data)
+                            }
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            alert('ERROR Try again later');
+                        })
                 }}>
                 Log in
             </Button>
 
-            <Button 
-                icon="account-plus" 
-                style={{ marginTop: 30 }} 
-                mode="contained" 
+            <Button
+                icon="account-plus"
+                style={{ marginTop: 30 }}
+                mode="contained"
                 onPress={() => navigation.navigate("Register")}>
                 Register
             </Button>
