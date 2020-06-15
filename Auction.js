@@ -77,6 +77,7 @@ export function Auction({ navigation, route }) {
     const { uid } = route.params;
 
     const [offerprice, setOfferPrice] = useState('');
+    const [price, setPrice] = useState(item.price);
 
     const doAuction = () => {
         if (offerprice <= item.price) {
@@ -94,12 +95,8 @@ export function Auction({ navigation, route }) {
                 .then(function (response) {
 
                     console.log(response.data.data)
+                    setPrice(offerprice)
                     alert("Auction complete")
-
-                    navigation.navigate("Auction", {
-                        item: item,
-                        uid: uid,
-                    });
 
                 })
                 .catch(function (error) {
@@ -144,7 +141,7 @@ export function Auction({ navigation, route }) {
                 <Text style={{ paddingTop: 5 }}>{item.description}</Text>
 
                 <Text style={{ paddingTop: 20 }}>Current bid price</Text>
-                <Text style={{ paddingTop: 5 }}>{item.price}</Text>
+                <Text style={{ paddingTop: 5 }}>{price}</Text>
 
 
                 <Text style={{ paddingTop: 20 }}>offer price</Text>
