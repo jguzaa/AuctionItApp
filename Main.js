@@ -7,6 +7,9 @@ import ImagePicker from 'react-native-image-picker'
 import axiosClient from 'axios'
 import { Button } from 'react-native-paper';
 
+const IP = 'http://172.20.10.12:3000'
+//const IP = 'http://192.168.1.126:3000'
+
 
 var userId = null;
 
@@ -133,7 +136,7 @@ function HomeScreen({ navigation, route }) {
             setSelected(newSelected);
 
             axiosClient
-                .post('http://192.168.1.126:3000/auction_select/', {
+                .post(IP + '/auction_select/', {
                     item_id: id
                 })
                 .then(function (response) {
@@ -198,7 +201,7 @@ function HomeScreen({ navigation, route }) {
                 mode="contained"
                 onPress={() => {
                     axiosClient
-                        .get('http://192.168.1.126:3000/auction/')
+                        .get(IP + '/auction/')
                         .then(function (response) {
 
                             console.log(response.data.data)
@@ -229,7 +232,7 @@ function CreateScreen() {
 
     const create = () => {
         axiosClient
-            .post('http://192.168.1.126:3000/create_auction/', {
+            .post(IP + '/create_auction/', {
                 pname: name,
                 pdes: des,
                 pprice: price,

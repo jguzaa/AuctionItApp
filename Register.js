@@ -4,6 +4,9 @@ import { Text, View, Image, StyleSheet, TextInput, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import axios from 'axios';
 
+const IP = 'http://172.20.10.12:3000'
+//const IP = 'http://192.168.1.126:3000'
+
 export function Register({ navigation, route }) {
 
     const [user, setUser] = useState('');
@@ -41,7 +44,7 @@ export function Register({ navigation, route }) {
                 onPress={() => {
                     
                     axios
-                    .post('http://192.168.1.126:3000/user_regis/',{
+                    .post(IP + '/user_regis/',{
                         username: user,
                         password: pass,
                         phoneNo: pNo

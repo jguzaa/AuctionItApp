@@ -5,6 +5,9 @@ import axios from 'axios';
 
 import { Button } from 'react-native-paper';
 
+const IP = 'http://172.20.10.12:3000'
+//const IP = 'http://192.168.1.126:3000'
+
 
 const styles = StyleSheet.create({
     container: {
@@ -53,7 +56,7 @@ export function Login({ navigation, route }) {
                 mode="contained"
                 onPress={() => {
                     axios
-                        .post('http://192.168.1.126:3000/login/', {
+                        .post(IP + '/login/', {
                             username: user,
                             password: pass
                         })

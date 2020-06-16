@@ -4,6 +4,9 @@ import { Text, View, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity,
 import { Button } from 'react-native-paper';
 import axiosClient from 'axios'
 
+const IP = 'http://172.20.10.12:3000'
+//const IP = 'http://192.168.1.126:3000'
+
 export function Auction({ navigation, route }) {
 
     const styles = StyleSheet.create({
@@ -87,7 +90,7 @@ export function Auction({ navigation, route }) {
 
 
             axiosClient
-                .post('http://192.168.1.126:3000/doauction/', {
+                .post(IP + '/doauction/', {
                     buyer_id: uid,
                     item_id: item._id,
                     price: offerprice
@@ -110,7 +113,7 @@ export function Auction({ navigation, route }) {
     const getseller = () => {
 
         axiosClient
-            .post('http://192.168.1.126:3000/seller/', {
+            .post(IP + '/seller/', {
                 user_id: item.uid
             })
             .then(function (response) {
