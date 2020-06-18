@@ -15,6 +15,7 @@ import { Auction } from './Auction';
 const Stack = createStackNavigator();
 
 const App = () => (
+  //stack navigation controller
   <NavigationContainer>
     <Stack.Navigator>
       <Stack.Screen

@@ -9,6 +9,7 @@ const IP = 'http://192.168.1.126:3000'
 
 export function Register({ navigation, route }) {
 
+    //set state
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
     const [pNo, setPNo] = useState('');
@@ -43,6 +44,7 @@ export function Register({ navigation, route }) {
                 mode="contained"
                 onPress={() => {
                     
+                    //use axios for connect and send data to server for registration
                     axios
                     .post(IP + '/user_regis/',{
                         username: user,

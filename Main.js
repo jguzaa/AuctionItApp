@@ -85,12 +85,14 @@ export function Main({ navigation, route }) {
 
     //console.log(route.params);
 
+    //get uid from the login page via route
     const { data } = route.params;
     userId = JSON.stringify(data);
     userId = userId.replace(/"/g, '');
 
     return (
 
+        //set up button tab navigation
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
@@ -104,7 +106,6 @@ export function Main({ navigation, route }) {
                         iconName = focused ? 'ios-list-box' : 'ios-list';
                     }
 
-                    // You can return any component that you like here!
                     return <Ionicons name={iconName} size={size} color={color} />;
                 },
             })}
@@ -123,11 +124,14 @@ export function Main({ navigation, route }) {
 
 //=======================Screen===============================
 
+//=======================HomeScreen===============================
 function HomeScreen({ navigation, route }) {
 
     const [auctionList, setAcList] = useState([]);
     const [selected, setSelected] = useState(new Map());
 
+    //when the user tap on the auction in the list get its auctionid 
+    //then navigate to auction detail page
     const onSelect = React.useCallback(
         id => {
             const newSelected = new Map(selected);
@@ -135,6 +139,7 @@ function HomeScreen({ navigation, route }) {
 
             setSelected(newSelected);
 
+            //get the auction detail from its id then attached to the next page
             axiosClient
                 .post(IP + '/auction_select/', {
                     item_id: id
@@ -159,6 +164,7 @@ function HomeScreen({ navigation, route }) {
         [selected],
     );
 
+    //list display management
     function Item({ id, title, imguri, selected, onSelect }) {
         return (
             <TouchableOpacity
@@ -220,8 +226,12 @@ function HomeScreen({ navigation, route }) {
     );
 }
 
+
+
+//=======================CreateScreen===============================
 function CreateScreen() {
 
+    //set default picture
     const [photoUri, setPhotoUri] = useState('https://res.cloudinary.com/ogcodes/image/upload/v1581387688/m0e7y6s5zkktpceh2moq.jpg');
 
     const [name, setName] = useState('');
@@ -230,6 +240,7 @@ function CreateScreen() {
     const [date, setDate] = useState('');
 
 
+    //function for create the auction
     const create = () => {
         axiosClient
             .post(IP + '/create_auction/', {
@@ -252,6 +263,7 @@ function CreateScreen() {
             })
     }
 
+    //when select btn pressed
     const selectPhotoTapped = () => {
         const options = {
             title: 'Select Photo',
@@ -260,6 +272,8 @@ function CreateScreen() {
                 path: 'images',
             },
         };
+
+        //image picker calling to get the image
         ImagePicker.showImagePicker(options, (response) => {
 
             // console.log('Response = ', response);
@@ -268,6 +282,7 @@ function CreateScreen() {
             } else if (response.error) {
                 console.log('ImagePicker Error: ', response.error);
             } else {
+                //set up image detail for uploading
                 const uri = response.uri;
                 const type = response.type;
                 const name = response.fileName;
@@ -284,11 +299,13 @@ function CreateScreen() {
             }
         });
 
+        //for cloudinaty image upload function
         const cloudinaryUpload = (photo) => {
 
             const cloudName = 'dkthn2rrz';
             const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
+            //setup cloudinary form with api key
             const formData = new FormData()
             formData.append("api_key", '927137781937745');
             formData.append("file", 'data:image/jpg;base64,' + photo.data);
@@ -296,8 +313,7 @@ function CreateScreen() {
             formData.append("timestamp", Date.now() / 1000);
             formData.append("upload_preset", 'dkthn2rrzup');
 
-
-
+            //upload picture via POST method
             axiosClient
                 .post(url, formData)
                 .then((result) => {

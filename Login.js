@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 
 export function Login({ navigation, route }) {
 
+    //set state
     const [user, setUser] = useState('');
     const [pass, setPass] = useState('');
 
@@ -55,6 +56,8 @@ export function Login({ navigation, route }) {
                 style={{ marginTop: 10 }}
                 mode="contained"
                 onPress={() => {
+
+                    //send username and password to server for authenticated function
                     axios
                         .post(IP + '/login/', {
                             username: user,
@@ -68,6 +71,7 @@ export function Login({ navigation, route }) {
                                 
                             } else {
                                 alert('Login successful');
+                                //navigate to main page with the uid data attached
                                 navigation.navigate("Main", response.data)
                             }
 
@@ -84,6 +88,7 @@ export function Login({ navigation, route }) {
                 icon="account-plus"
                 style={{ marginTop: 30 }}
                 mode="contained"
+                //navigate to register
                 onPress={() => navigation.navigate("Register")}>
                 Register
             </Button>

@@ -83,12 +83,13 @@ export function Auction({ navigation, route }) {
     const [price, setPrice] = useState(item.price);
 
     const doAuction = () => {
+
+        //check offer price should more than the old price
         if (offerprice <= item.price) {
             alert("wrong offer price")
         } else {
 
-
-
+            //send the new price to server with updated buyer user id
             axiosClient
                 .post(IP + '/doauction/', {
                     buyer_id: uid,
@@ -110,6 +111,7 @@ export function Auction({ navigation, route }) {
         }
     }
 
+    //get seller detail for display
     const getseller = () => {
 
         axiosClient
@@ -159,7 +161,6 @@ export function Auction({ navigation, route }) {
 
                 <Text style={{ paddingTop: 20 }}>End date</Text>
                 <Text style={{ paddingTop: 5 }}>{item.date}</Text>
-
 
 
                 <TouchableOpacity onPress={getseller} style={styles.uploadButton}>
