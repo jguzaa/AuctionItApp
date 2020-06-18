@@ -4,8 +4,8 @@ import { Text, View, Image, StyleSheet, TextInput, Dimensions, TouchableOpacity,
 import { Button } from 'react-native-paper';
 import axiosClient from 'axios'
 
-const IP = 'http://172.20.10.12:3000'
-//const IP = 'http://192.168.1.126:3000'
+//const IP = 'http://172.20.10.12:3000'
+const IP = 'http://192.168.1.126:3000'
 
 export function Auction({ navigation, route }) {
 

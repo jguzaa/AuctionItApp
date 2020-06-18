@@ -7,8 +7,8 @@ import ImagePicker from 'react-native-image-picker'
 import axiosClient from 'axios'
 import { Button } from 'react-native-paper';
 
-const IP = 'http://172.20.10.12:3000'
-//const IP = 'http://192.168.1.126:3000'
+//const IP = 'http://172.20.10.12:3000'
+const IP = 'http://192.168.1.126:3000'
 
 
 var userId = null;
