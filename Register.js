@@ -4,8 +4,8 @@ import { Text, View, Image, StyleSheet, TextInput, Alert } from 'react-native';
 import { Button } from 'react-native-paper';
 import axios from 'axios';
 
-//const IP = 'http://172.20.10.12:3000'
-const IP = 'http://192.168.1.126:3000'
+//change server ip
+const IP = 'http://192.168.5.80:3000'
 
 export function Register({ navigation, route }) {
 
